@@ -1,18 +1,24 @@
 #!/usr/bin/env python3
 
-from os import listdir
+import os
+import time
 
 import proc
 from models import Video
+
+print(f'Using {os.name} os.') ## Note that Mac OS is posix
 
 video_editor = proc.VideoEditor()
 
 videos = []
 path = "videos"
-for name in listdir(path):
-    if not name == 'DS.Store':
-        videos.append(Video(f'{path}/{name}'))
+for name in os.listdir(path):
+    if not name == '.DS_Store':
+    	videos.append(Video(f'{path}/{name}'))
 
-print(videos)
+video1 = Video('videos/man.mp4')
+video2 = Video('videos/scooby.mp4')
 
-video_editor.add_videos('output', videos)
+output = video1 + video2
+
+video_editor.write('prcessed', output)
