@@ -1,11 +1,18 @@
 #!/usr/bin/env python3
 
+from os import listdir
+
 import proc
-import record
+from models import Video
 
-# video_editor = proc.VideoEditor()
+video_editor = proc.VideoEditor()
 
-# video_editor.add_videos():
+videos = []
+path = "videos"
+for name in listdir(path):
+    if not name == 'DS.Store':
+        videos.append(Video(f'{path}/{name}'))
 
-video_recorder = record.VideoRecorder()
-video_recorder.record(0, 0, 1280, 720, length=10)
+print(videos)
+
+video_editor.add_videos('output', videos)
