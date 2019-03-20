@@ -1,3 +1,5 @@
+import time
+
 import cv2
 import numpy as np
 
@@ -9,6 +11,7 @@ class Video:
 
 		""" '__init__' function takes video path as param and stores its info using VideoCapture class. """
 
+		self.name = path.split('/')[-1]
 		self.cap = cv2.VideoCapture(path)
 		self.frames_count = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
 		self.width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -24,7 +27,20 @@ class Video:
 			self.frames[i] = frame
 
 	def __add__(self, other):
-		video = self
-		video.frames = np.hstack((self.frames, other.frames))
-		video.frames_count = video.frames.shape[0]
-		return video
+		self.name = 'combined'
+		self.frames = np.hstack((self.frames, other.frames))
+		self.frames_count += other.frames.shape[0]
+		return self
+
+	def __mul__(self, number):
+		if type(number) != int:
+			raise Exception("Multiplier must be of type 'int'.")
+
+		original_video_frames = self.frames
+		original_video_frames_count = self.frames_count
+		self.name = 'repeated'
+		for i in range(1, number):
+			self.frames = np.hstack((self.frames, original_video_frames))
+			self.frames_count += original_video_frames_count
+
+		return self

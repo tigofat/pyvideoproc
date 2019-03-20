@@ -10,15 +10,20 @@ print(f'Using {os.name} os.') ## Note that Mac OS is posix
 
 video_editor = proc.VideoEditor()
 
-videos = []
-path = "videos"
-for name in os.listdir(path):
-    if not name == '.DS_Store':
-    	videos.append(Video(f'{path}/{name}'))
+# video_editor.add_videos_in_folder('processed', 'videos')
 
-video1 = Video('videos/man.mp4')
-video2 = Video('videos/scooby.mp4')
+video = Video('videos/scooby.mp4')
+video_editor.write('output', video * 3)
 
-output = video1 + video2
+# videos = []
+# path = "videos"
+# for name in os.listdir(path):
+#     if not name == '.DS_Store':
+#     	videos.append(Video(f'{path}/{name}'))
 
-video_editor.write('prcessed', output)
+# output = videos[-1]
+# del videos[-1]
+# for i in range(len(videos)):
+# 	output += videos[i]
+
+# video_editor.write('prcessed', output)
