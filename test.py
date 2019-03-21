@@ -24,8 +24,8 @@ class Video:
 
 # video = Video('videos/scooby.mp4')
 
-# arr = np.random.rand(10000000)
+arr = np.random.rand(10000000)
 
-# start_time = time.time()
-# a = arr
-# print(time.time() - start_time)
+start_time = time.time()
+a = arr
+print(time.time() - start_time)
