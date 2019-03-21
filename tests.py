@@ -8,22 +8,16 @@ from models import Video
 
 print(f'Using {os.name} os.') ## Note that Mac OS is posix
 
+""" Init VideoEditor object. """
 video_editor = proc.VideoEditor()
 
-# video_editor.add_videos_in_folder('processed', 'videos')
+video_editor.add_videos_from_dir('processed', 'videos', method='random', cut_size=20)
 
-video = Video('videos/scooby.mp4')
-video_editor.write('output', video * 3)
+# or
 
 # videos = []
-# path = "videos"
-# for name in os.listdir(path):
+# for name in os.listdir('videos'):
 #     if not name == '.DS_Store':
-#     	videos.append(Video(f'{path}/{name}'))
+#         videos.append(Video(f'videos/{name}'))
 
-# output = videos[-1]
-# del videos[-1]
-# for i in range(len(videos)):
-# 	output += videos[i]
-
-# video_editor.write('prcessed', output)
+# video_editor.add_videos('processed', videos, method='random', cut_size=24)
