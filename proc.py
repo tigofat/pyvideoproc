@@ -5,8 +5,8 @@ import os
 import pprint as pp
 import copy
 
-from models import Video
-from logic import shuffle, loading_
+from pyvideoproc.models import Video
+from pyvideoproc.logic import shuffle, loading_
 
 pprint = pp.PrettyPrinter().pprint
 
@@ -23,7 +23,7 @@ class VideoEditor:
             for i in range(len(videos)):
                 for j in range(videos[i].frames_count // cut_size):
                     cut_video_list.append(videos[i].cut((j*cut_size, j*cut_size+cut_size)))
-
+            
             shuffle(cut_video_list, 5000)
             video_list = cut_video_list
         elif not method == 'normal':

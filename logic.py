@@ -1,12 +1,11 @@
 import random
 
-def loading_(i):
-	symbols = ['▁', '▂', '▃', '▄', '▅', '▆', '▇', '▆', '▅', '▄', '▃', '▂']
-	if i < len(symbols) - 1:
-		i += 1
-	else:
-		i = 0
-	return symbols[i], i
+def loading_(value, target):
+	per = value * 10 / target
+	per_int = int(per)
+	complete = '▇' * per_int
+	incomplete = ' ' * (10 - per_int)
+	return f'|{complete}{incomplete}|'
 
 def shuffle(list, number):
 	for i in range(number):

@@ -8,10 +8,11 @@ class Video:
 
 	""" Video class is for string video related data. """
 
-	def __init__(self, path):
+	def __init__(self, path, load=True):
 
 		""" '__init__' function takes video path as param and stores its info using VideoCapture class. """
 
+		self.path = path
 		self.name = path.split('/')[-1]
 		cap = cv2.VideoCapture(path)
 		self.frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -21,9 +22,14 @@ class Video:
 
 		self.read_frames_count = self.frames_count
 
-		self.__load(cap)
+		if load:
+			self.load()
 
-	def __load(self, cap):
+	def load(self):
+
+		# This is a bad practice but for some reasons it does not let me have a class field set to 'cv2.VideoCapture(path)'
+		cap = cv2.VideoCapture(self.path)
+
 		self.frames = np.empty(self.frames_count, dtype=np.ndarray)
 		for i in range(self.frames_count):
 			ret, frame = cap.read()
