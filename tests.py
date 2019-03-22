@@ -17,7 +17,7 @@ video_editor.add_videos_from_dir('processed', 'videos', method='random', cut_siz
 
 # videos = []
 # for name in os.listdir('videos'):
-#     if not name == '.DS_Store':
+    # if not name == '.DS_Store':
 #         videos.append(Video(f'videos/{name}'))
 
 # video_editor.add_videos('processed', videos, method='random', cut_size=24)

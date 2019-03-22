@@ -18,7 +18,7 @@ class VideoEditor:
     def add_videos(self, output_video_name, videos, method='normal', cut_size=1):
         video_list = videos
         if method == 'random':
-            print('Randomizing...')
+            print('▷ Randomizing...')
             cut_video_list = []
             for i in range(len(videos)):
                 for j in range(videos[i].frames_count // cut_size):
