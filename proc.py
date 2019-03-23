@@ -37,11 +37,6 @@ class VideoEditor:
 
         self.write_video(output_video_name, combined_video)
 
-    def add_videos_from_dir(self, output_video_name, path, method='normal', cut_size=1):
-        video_list = self.get_videos_from_dir(path)
-
-        self.add_videos(output_video_name, video_list, method, cut_size)
-
     def write_video(self, output_video_name, video):
         start_time = time.time()
         video_writer = self.__create_video_writer(output_video_name, video.fps, 

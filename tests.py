@@ -11,7 +11,9 @@ print(f'Using {os.name} os.') ## Note that Mac OS is posix
 """ Init VideoEditor object. """
 video_editor = proc.VideoEditor()
 
-video_editor.add_videos_from_dir('processed', 'videos', method='random', cut_size=20)
+videos = video_editor.get_video_from_fir('videos')
+
+video_editor.add_videos('processed', videos, method='random', cut_size=20)
 
 # or
 
