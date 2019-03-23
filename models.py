@@ -39,7 +39,7 @@ class Video:
 		video = copy.deepcopy(self)
 		video.name = 'cut'
 		video.frames = self.frames[places[0]:places[1]]
-		video.frames_count = video.frames_count
+		video.frames_count = video.frames.shape[0]
 		return video
 
 	def __add__(self, other):
