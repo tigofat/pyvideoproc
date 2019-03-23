@@ -39,14 +39,14 @@ class Video:
 		video = copy.deepcopy(self)
 		video.name = 'cut'
 		video.frames = self.frames[places[0]:places[1]]
-		video.frames_count = video.frames.shape[0]
+		video.frames_count = video.frames_count
 		return video
 
 	def __add__(self, other):
 		video = copy.deepcopy(self)
 		video.name = 'combined'
 		video.frames = np.hstack((video.frames, other.frames))
-		video.frames_count += other.frames.shape[0]
+		video.frames_count += other.frames_count
 		return video
 
 	def __mul__(self, number):
@@ -58,7 +58,7 @@ class Video:
 		original_video_frames_count = video.frames_count
 		video.name = 'repeated'
 		for i in range(1, number):
-			video.frames = np.hstack((video.fram1es, original_video_frames))
+			video.frames = np.hstack((video.frames, original_video_frames))
 			video.frames_count += original_video_frames_count
 			video.read_frames_count = video.frames_count
 
