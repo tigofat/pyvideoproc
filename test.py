@@ -22,10 +22,76 @@ class Video:
 
 		self.loaded = True
 
-video = Video('videos/scooby.mp4')
-print(deepcopy(video))
-# arr = np.random.rand(10000000)
 
-# start_time = time.time()
-# a = arr
-# print(time.time() - start_time)
+def my_logger(orig_func):
+
+	def wrapper_logger(*args, **kwargs):
+		print(f'{orig_func.__name__} logger: Run with args {args} and kwargs {kwargs}.')
+		return orig_func(*args, **kwargs)
+
+	return wrapper_logger
+
+def my_timer(orig_func):
+
+	def wrapper_timer(*args, **kwargs):
+		start = time.time()
+		result = orig_func(*args, **kwargs)
+		print(f'{orig_func.__name__} run in {time.time() - start} seconds.')
+		return result
+
+	return wrapper_timer
+
+@my_timer
+@my_logger
+def display_info(name, age):
+	time.sleep(0.5)
+	print(f'display_info prints: {name} and {age}')
+
+# display_info('Tigran', 18)
+
+from itertools import accumulate
+
+l = [1, 2, 3]
+
+from functools import partial
+
+def cal(prices, callback):
+	return callback(sum(prices))
+
+#price_log = partial(print, 'The total proce is')
+#cal([1, 2, 3, 4, 5], price_log)
+
+import logging
+
+#logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+
+#logging.debug('This is an error message.')
+#logging.info('This is an error message.')
+#logging.warning('This is an error message.')
+#logging.error('This is an error message.')
+#logging.critical('This is an error message.')
+
+try:
+	c = 10 / 1
+except:
+	## logging.error('Exception occurred', exc_info=True) as same as
+	logging.exception('Exception occurred')
+
+logger = logging.getLogger(__name__)
+
+c_handler = logging.StreamHandler()
+f_handler = logging.FileHandler('file.log')
+c_handler.setLevel(logging.WARNING)
+f_handler.setLevel(logging.ERROR)
+
+c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+c_handler.setFormatter(c_format)
+f_handler.setFormatter(f_format)
+
+logger.addHandler(c_handler)
+logger.addHandler(f_handler)
+
+logger.warning('This is a warring.')
+logger.error('This is an error')
