@@ -21,14 +21,14 @@ def write(output_video_name, video):
 		video_writer.write(frame)
 
 
-class VideoProc:
+# class VideoProc:
 	
-	def __init__(self, frames):
-		self._frames = frames
+# 	def __init__(self, frames):
+# 		self._frames = frames
 
-	@property
-	def video(self):
-		return self._video
+# 	@property
+# 	def video(self):
+# 		return self._video
 
 
 class VideoEditor:
