@@ -3,24 +3,26 @@ import time
 import cv2
 import numpy as np
 import copy
+import time
 
 class Video:
 
 	""" Video class is for string video related data. """
 
-	def __init__(self, path, load=True):
+	def __init__(self, path='', load=True):
 
 		""" '__init__' function takes video path as param and stores its info using VideoCapture class. """
 
+		try:
+			cap = cv2.VideoCapture(path)
+		except:
+			return
+
 		self.path = path
 		self.name = path.split('/')[-1]
-		cap = cv2.VideoCapture(path)
-		self.frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 		self.width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 		self.height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 		self.fps = int(cap.get(cv2.CAP_PROP_FPS))
-
-		self.read_frames_count = self.frames_count
 
 		if load:
 			self.load()
@@ -29,37 +31,44 @@ class Video:
 
 		# This is a bad practice but for some reasons it does not let me have a class field set to 'cv2.VideoCapture(path)'
 		cap = cv2.VideoCapture(self.path)
+		frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-		self.frames = np.empty(self.frames_count, dtype=np.ndarray)
-		for i in range(self.frames_count):
+		self.frames = np.empty(frames_count, dtype=np.ndarray)
+		for i in range(frames_count):
 			ret, frame = cap.read()
 			self.frames[i] = frame
 
-	def cut(self, places):
-		video = copy.deepcopy(self)
-		video.name = 'cut'
-		video.frames = self.frames[places[0]:places[1]]
-		video.frames_count = video.frames.shape[0]
-		return video
+		## It is also possible to use list comprehensions, but performance is slower in this case.
+		## self.frames = np.array([cap.read()[1] for i in range(frames_count)])
+	
+	# @classmethod
+	# def instance():
 
-	def __add__(self, other):
-		video = copy.deepcopy(self)
-		video.name = 'combined'
-		video.frames = np.hstack((video.frames, other.frames))
-		video.frames_count += other.frames_count
-		return video
+	# def cut(self, places):
+	# 	video = copy.deepcopy(self)
+	# 	video.name = 'cut'
+	# 	video.frames = self.frames[places[0]:places[1]]
+	# 	video.frames_count = video.frames.shape[0]
+	# 	return video
 
-	def __mul__(self, number):
-		if type(number) != int:
-			raise Exception("Multiplier must be of type 'int'.")
+	# def __add__(self, other):
+	# 	video = copy.deepcopy(self)
+	# 	video.name = 'combined'
+	# 	video.frames = 
+	# 	video.frames_count += other.frames_count
+	# 	return video
 
-		video = copy.deepcopy(self)
-		original_video_frames = video.frames
-		original_video_frames_count = video.frames_count
-		video.name = 'repeated'
-		for i in range(1, number):
-			video.frames = np.hstack((video.frames, original_video_frames))
-			video.frames_count += original_video_frames_count
-			video.read_frames_count = video.frames_count
+	# def __mul__(self, number):
+	# 	if type(number) != int:
+	# 		raise Exception("Multiplier must be of type 'int'.")
 
-		return video
+	# 	video = copy.deepcopy(self)
+	# 	original_video_frames = video.frames
+	# 	original_video_frames_count = video.frames_count
+	# 	video.name = 'repeated'
+	# 	for i in range(1, number):
+	# 		video.frames = np.hstack((video.frames, original_video_frames))
+	# 		video.frames_count += original_video_frames_count
+	# 		video.read_frames_count = video.frames_count
+
+	# 	return videox

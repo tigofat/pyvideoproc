@@ -4,16 +4,23 @@ import os
 import time
 
 import proc
+import edit
+import manage
 from models import Video
 
 print(f'Using {os.name} os.') ## Note that Mac OS is posix
 
-""" Init VideoEditor object. """
-video_editor = proc.VideoEditor()
+videos = manage.get_videos_from_dir('videos')
 
-videos = video_editor.get_video_from_fir('videos')
+video_editor = edit.VideoEditor(videos[0])
+videos.pop(0)
 
-video_editor.add_videos('processed', videos, method='random', cut_size=20)
+for video in videos:
+	video_editor.add(video.frames)
+
+video_editor.cut_to_videos()
+
+edit.write('processed', video_editor.video)
 
 # or
 

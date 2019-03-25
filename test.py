@@ -62,6 +62,7 @@ def cal(prices, callback):
 #cal([1, 2, 3, 4, 5], price_log)
 
 import logging
+import logging.config
 
 #logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -77,21 +78,25 @@ except:
 	## logging.error('Exception occurred', exc_info=True) as same as
 	logging.exception('Exception occurred')
 
+logging.config.fileConfig(fname='file.conf', disable_existing_loggers=False)
+
 logger = logging.getLogger(__name__)
 
-c_handler = logging.StreamHandler()
-f_handler = logging.FileHandler('file.log')
-c_handler.setLevel(logging.WARNING)
-f_handler.setLevel(logging.ERROR)
+logger.warning('This is supposted to be an error, but it is not.')
 
-c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+#c_handler = logging.StreamHandler()
+#f_handler = logging.FileHandler('file.log')
+#c_handler.setLevel(logging.WARNING)
+#f_handler.setLevel(logging.ERROR)
 
-c_handler.setFormatter(c_format)
-f_handler.setFormatter(f_format)
+#c_format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+#f_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-logger.addHandler(c_handler)
-logger.addHandler(f_handler)
+#c_handler.setFormatter(c_format)
+#f_handler.setFormatter(f_format)
 
-logger.warning('This is a warring.')
-logger.error('This is an error')
+#logger.addHandler(c_handler)
+#logger.addHandler(f_handler)
+
+#logger.warning('This is a warring.')
+#logger.error('This is an error')
