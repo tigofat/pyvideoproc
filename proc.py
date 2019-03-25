@@ -1,3 +1,5 @@
+## The code here needs to be reformated!!! Please don't pay attention to issues.
+
 import cv2
 import numpy as np
 import time
@@ -6,7 +8,6 @@ import pprint as pp
 import copy
 
 from models import Video
-from logic import shuffle
 import manage
 import edit
 

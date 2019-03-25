@@ -18,15 +18,6 @@ videos.pop(0)
 for video in videos:
 	video_editor.add(video.frames)
 
-video_editor.cut_to_videos()
+video_editor.shuffle(cut_size=25)
 
 edit.write('processed', video_editor.video)
-
-# or
-
-# videos = []
-# for name in os.listdir('videos'):
-    # if not name == '.DS_Store':
-#         videos.append(Video(f'videos/{name}'))
-
-# video_editor.add_videos('processed', videos, method='random', cut_size=24)

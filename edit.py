@@ -1,9 +1,11 @@
-import cv2
-import numpy as np
+from copy import deepcopy
 import time
 import os
+import random
+
+import cv2
+import numpy as np
 import pprint as pp
-from copy import deepcopy
 
 from models import Video
 
@@ -21,14 +23,14 @@ def write(output_video_name, video):
 		video_writer.write(frame)
 
 
-# class VideoProc:
+class VideoProc:
 	
-# 	def __init__(self, frames):
-# 		self._frames = frames
+	def __init__(self, frames):
+		self._frames = frames
 
-# 	@property
-# 	def video(self):
-# 		return self._video
+	@property
+	def video(self):
+		return self._video
 
 
 class VideoEditor:
@@ -51,24 +53,20 @@ class VideoEditor:
 		self._frames = np.hstack((self._frames[:places[0]], self._frames[places[1]:]))
 		return cut
 
-	def replace(self):
-		pass
-
 	def cut_to_videos(self, cut_size):
-		# cut_video_list = []
-		# for cut in range(self._video.frames_count)[::cut_size]:
-		# 	video = copy.deepcopy(self._video)
-		# 	video.frames = self.frames[cut, cut + cut_size]
-		# 	video.frames_count = video.frames.shape[0]
-		# 	cut_video_list.append()
-		# return videos
 		return [
-			self._frames[cut, cut + cut_size]
-			for cut in range(self._frames.shape[0])[::cut_size]
+			self._frames[cut_size * i : cut_size * i + cut_size]
+			for i in range(self._frames.shape[0] // cut_size - 1)
 		]
+
+	def shuffle(self, cut_size):
+		frames = self.cut_to_videos(cut_size)
+		random.shuffle(frames)
+		self._frames = np.empty(shape=0, dtype=np.ndarray)
+		for frame in frames:
+			self._frames = np.hstack((self._frames, frame))
 
 	@property
 	def video(self):
 		self._video.frames = self._frames
 		return self._video
-	
