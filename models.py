@@ -7,32 +7,42 @@ import time
 
 class Video:
 
-	""" Video class is for string video related data. """
-
 	def __init__(self, path=''):
 
-		""" '__init__' function takes video path as param and stores its info using VideoCapture class. """
-
 		try:
-			self.cap = cv2.VideoCapture(path)
+			cap = cv2.VideoCapture(path)
 		except:
 			return
 
 		self.path = path
 		self.name = path.split('/')[-1]
-		self.width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-		self.height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-		self.fps = int(self.cap.get(cv2.CAP_PROP_FPS))
+		self.width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+		self.height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+		self.fps = int(cap.get(cv2.CAP_PROP_FPS))
 
-		self.load()
+		self.__load(cap)
 
-	def load(self):
-		frames_count = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
+	def __load(self, cap):
+		frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 		self.frames = np.empty(frames_count, dtype=np.ndarray)
 		for i in range(frames_count):
-			ret, frame = self.cap.read()
+			ret, frame = cap.read()
 			self.frames[i] = frame
+
+	def add(self, other):
+		frames = other.frames if isinstance(other, Video) else other
+		self.frames = np.hstack((self.frames, frames))
+
+	def mul(self, times):
+		original_frames = self.frames
+		for ii in range(1, times):
+			self.frames = np.hstack((self.frames, original_frames))
+
+	def cut(self, places):
+		self.frames = np.hstack((self.frames[:places[0]], 
+								self.frames[places[1]:]))
+		return self.frames[places[0]:places[1]]
 
 		## It is also possible to use list comprehensions, but performance is slower in this case.
 		## self.frames = np.array([cap.read()[1] for i in range(frames_count)])
