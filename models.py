@@ -9,33 +9,29 @@ class Video:
 
 	""" Video class is for string video related data. """
 
-	def __init__(self, path='', load=True):
+	def __init__(self, path=''):
 
 		""" '__init__' function takes video path as param and stores its info using VideoCapture class. """
 
 		try:
-			cap = cv2.VideoCapture(path)
+			self.cap = cv2.VideoCapture(path)
 		except:
 			return
 
 		self.path = path
 		self.name = path.split('/')[-1]
-		self.width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-		self.height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-		self.fps = int(cap.get(cv2.CAP_PROP_FPS))
+		self.width = int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+		self.height = int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+		self.fps = int(self.cap.get(cv2.CAP_PROP_FPS))
 
-		if load:
-			self.load()
+		self.load()
 
 	def load(self):
-
-		# This is a bad practice but for some reasons it does not let me have a class field set to 'cv2.VideoCapture(path)'
-		cap = cv2.VideoCapture(self.path)
-		frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+		frames_count = int(self.cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 		self.frames = np.empty(frames_count, dtype=np.ndarray)
 		for i in range(frames_count):
-			ret, frame = cap.read()
+			ret, frame = self.cap.read()
 			self.frames[i] = frame
 
 		## It is also possible to use list comprehensions, but performance is slower in this case.

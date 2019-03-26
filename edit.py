@@ -1,13 +1,13 @@
-from copy import deepcopy
 import time
 import os
 import random
+from copy import deepcopy
 
 import cv2
 import numpy as np
 import pprint as pp
 
-from models import Video
+from .models import Video
 
 pprint = pp.PrettyPrinter().pprint
 
@@ -25,11 +25,17 @@ def write(output_video_name, video):
 
 class VideoProc:
 	
-	def __init__(self, frames):
-		self._frames = frames
+	def __init__(self, video):
+		self._video = video
+		self._frames = video.frames
+
+	def to_gray(self):
+		self._frames = [cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) for frame in self._frames]
+		#self._frames = cv2.cvtColor(self._frames, cv2.COLOR_BGR2GRAY)
 
 	@property
 	def video(self):
+		self._video.frames = self._frames
 		return self._video
 
 
