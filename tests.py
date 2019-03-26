@@ -13,6 +13,4 @@ for name in listdir(path):
     if not name == 'DS.Store':
         videos.append(Video(f'{path}/{name}'))
 
-print(videos)
-
 video_editor.add_videos('output', videos)
