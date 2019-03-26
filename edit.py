@@ -24,55 +24,23 @@ def write(output_video_name, video):
 
 
 class VideoProc:
-	
-	def __init__(self, video):
-		self._video = video
-		self._frames = video.frames
-
-	def to_gray(self):
-		self._frames = [cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) for frame in self._frames]
-		#self._frames = cv2.cvtColor(self._frames, cv2.COLOR_BGR2GRAY)
-
-	@property
-	def video(self):
-		self._video.frames = self._frames
-		return self._video
-
-
-class VideoEditor:
 
 	def __init__(self, video):
 		self._video = video
-		self._frames = video.frames
-
-	def add(self, other):
-		frames = other.frames if isinstance(other, Video) else other
-		self._frames = np.hstack((self._frames, frames))
-
-	def mul(self, times):
-		original_video_frames = self._frames
-		for i in range(1, times):
-			self._frames = np.hstack((self._frames, original_video_frames))
-
-	def cut(self, places):
-		cut = self._frames[places[0]:places[1]]
-		self._frames = np.hstack((self._frames[:places[0]], self._frames[places[1]:]))
-		return cut
 
 	def cut_to_videos(self, cut_size):
 		return [
-			self._frames[cut_size * i : cut_size * i + cut_size]
-			for i in range(self._frames.shape[0] // cut_size - 1)
+			self._video.frames[cut_size * i : cut_size * i + cut_size]
+			for i in range(self._video.frames.shape[0] // cut_size - 1)
 		]
 
 	def shuffle(self, cut_size):
 		frames = self.cut_to_videos(cut_size)
 		random.shuffle(frames)
-		self._frames = np.empty(shape=0, dtype=np.ndarray)
+		self._video.frames = np.empty(shape=0, dtype=np.ndarray)
 		for frame in frames:
-			self._frames = np.hstack((self._frames, frame))
+			self._video.frames = np.hstack((self._video.frames, frame))
 
 	@property
 	def video(self):
-		self._video.frames = self._frames
 		return self._video
