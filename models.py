@@ -7,11 +7,7 @@ import time
 
 class Video:
 
-	""" Video class is for string video related data. """
-
 	def __init__(self, path=''):
-
-		""" '__init__' function takes video path as param and stores its info using VideoCapture class. """
 
 		try:
 			cap = cv2.VideoCapture(path)
