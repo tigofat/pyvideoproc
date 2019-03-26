@@ -1,5 +1,5 @@
 import os
-from models import Video
+from .models import Video
 
 def get_videos_from_dir(path):
     return [

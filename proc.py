@@ -7,19 +7,18 @@ import os
 import pprint as pp
 import copy
 
-from models import Video
+# from . import models
 import manage
-import edit
 
 pprint = pp.PrettyPrinter().pprint
 
-def edit_videos(self, output_video_name, videos):
+#def edit_videos(self, output_video_name, videos):
 
-    edit.write(video)
+#    edit.write(video)
 
-def edit_videos_from_dir(self, output_video_name, path_to_dir):
-    videos = manage.get_videos_from_dir(path_to_dir)
-    edit_videos(videos)
+#def edit_videos_from_dir(self, output_video_name, path_to_dir):
+#    videos = manage.get_videos_from_dir(path_to_dir)
+#    edit_videos(videos)
 
 # class VideoEditor:
 
