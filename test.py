@@ -78,11 +78,11 @@ except:
 	## logging.error('Exception occurred', exc_info=True) as same as
 	logging.exception('Exception occurred')
 
-logging.config.fileConfig(fname='file.conf', disable_existing_loggers=False)
+#logging.config.fileConfig(fname='file.conf', disable_existing_loggers=False)
 
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
-logger.warning('This is supposted to be an error, but it is not.')
+#logger.warning('This is supposted to be an error, but it is not.')
 
 #c_handler = logging.StreamHandler()
 #f_handler = logging.FileHandler('file.log')
@@ -100,3 +100,7 @@ logger.warning('This is supposted to be an error, but it is not.')
 
 #logger.warning('This is a warring.')
 #logger.error('This is an error')
+
+import subprocess
+command = "ffmpeg -i videos/man.mp4 -ab 160k -ac 2 -ar 44100 -vn audio.wav"
+subprocess.call(command, shell=True)
