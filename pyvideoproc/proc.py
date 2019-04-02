@@ -14,5 +14,6 @@ def add_videos(output_video_name, video_source, method='normal', cut_size=25):
 	for vid in videos:
 		video.add(vid)
 	video_proc = VideoProc(video)
-	if method == 'random': video_proc.shuffle(cut_size=cut_size)
+	if method == 'random': 
+		video_proc.shuffle(video_proc.cut_to_videos(cut_size=cut_size))
 	write(output_video_name, video_proc.video)

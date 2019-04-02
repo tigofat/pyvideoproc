@@ -3,9 +3,6 @@ import os
 import subprocess
 
 def combine_video_and_audio(output_name, path_to_video, path_to_audio):
-	if not os.path.isfile(path_to_video):
-		raise Exception('Video file does not exist.')
-
 	command = f'ffmpeg -i {path_to_video} -i {path_to_audio} -vcodec copy -acodec copy {output_name}.avi'
 	subprocess.call(command, shell=True)
 

@@ -8,6 +8,7 @@ import numpy as np
 import pprint as pp
 
 from .models import Video
+from .logger import log
 
 pprint = pp.PrettyPrinter().pprint
 
@@ -28,14 +29,15 @@ class VideoProc:
 	def __init__(self, video):
 		self._video = video
 
+	@log("Cutting {} to videos")
 	def cut_to_videos(self, cut_size):
 		return [
 			self._video.frames[cut_size * i : cut_size * i + cut_size]
 			for i in range(self._video.frames.shape[0] // cut_size - 1)
 		]
 
-	def shuffle(self, cut_size):
-		frames = self.cut_to_videos(cut_size)
+	@log("Shuffling and adding cut videos together from {}")
+	def shuffle(self, frames):
 		random.shuffle(frames)
 		self._video.frames = np.empty(shape=0, dtype=np.ndarray)
 		for frame in frames:
@@ -44,3 +46,6 @@ class VideoProc:
 	@property
 	def video(self):
 		return self._video
+
+	def __str__(self):
+		return self._video.name
