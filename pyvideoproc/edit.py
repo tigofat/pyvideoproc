@@ -43,6 +43,21 @@ class VideoProc:
 		for frame in frames:
 			self._video.frames = np.hstack((self._video.frames, frame))
 
+	@log("Cutting in range.")
+	def cut_in_range(self, lower_color, upper_color, threshhold, places=None):
+		lower_color = np.array(lower_color)
+		upper_color = np.array(upper_color)
+		frames = self._video.frames
+		frames_ = []
+		for frame in frames:
+			mask = cv2.inRange(frame, lower_color, upper_color)
+			shape_of_matching_colors = np.argwhere(mask != 0).shape[0]
+			mask_shape = mask.shape[0] * mask.shape[1]
+			if shape_of_matching_colors / mask_shape >= threshhold:
+				frames_.append(frame)
+
+		self._video.frames = np.array(frames_)
+
 	@property
 	def video(self):
 		return self._video
