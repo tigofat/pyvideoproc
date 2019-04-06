@@ -36,31 +36,27 @@ class VideoProc:
 			for i in range(self._video.frames.shape[0] // cut_size - 1)
 		]
 
-	@log("Shuffling and adding cut videos together from {}")
-	def shuffle(self, frames):
-		random.shuffle(frames)
-		self._video.frames = np.empty(shape=0, dtype=np.ndarray)
-		for frame in frames:
-			self._video.frames = np.hstack((self._video.frames, frame))
-
 	@log("Cutting in range.")
 	def cut_in_range(self, lower_color, upper_color, threshhold, places=None):
-		lower_color = np.array(lower_color)
-		upper_color = np.array(upper_color)
-		frames = self._video.frames
-		frames_ = []
-		for frame in frames:
-			mask = cv2.inRange(frame, lower_color, upper_color)
+		frames = []
+		for frame in self._video.frames:
+			mask = cv2.inRange(frame, 
+								np.array(lower_color), 
+								np.array(upper_color))
 			shape_of_matching_colors = np.argwhere(mask != 0).shape[0]
 			mask_shape = mask.shape[0] * mask.shape[1]
 			if shape_of_matching_colors / mask_shape >= threshhold:
-				frames_.append(frame)
+				frames.append(frame)
 
-		self._video.frames = np.array(frames_)
+		return np.array(frames)
 
 	@property
 	def video(self):
 		return self._video
+
+	@property
+	def frames(self):
+		return self._video.frames
 
 	def __str__(self):
 		return self._video.name

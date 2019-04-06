@@ -29,10 +29,10 @@ def log_with_loading(func):
 
 		return func(*args, **kwargs)
 
-def log(message, level='debug'):
+def log(message, level='info'):
 	def decorator(func):
 		def log_message_wrapper(self, *args, **kwargs):
-			__get_logger(level)(str(message).format(self))
+			__get_logger(level)(f'{message}'.format(self))
 			return func(self, *args, **kwargs)
 		return log_message_wrapper
 	return decorator

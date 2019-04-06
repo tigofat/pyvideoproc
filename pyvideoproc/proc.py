@@ -1,19 +1,3 @@
 from .edit import write, VideoProc
 from .manage import get_videos_from_dir
 from .models import Video
-
-def get_videos(source):
-	return (
-		get_videos_from_dir(source) if type(source) == str
-		else source
-	)
-
-def add_videos(output_video_name, video_source, method='normal', cut_size=25):
-	videos = get_videos(video_source)
-	video = videos.pop(0)
-	for vid in videos:
-		video.add(vid)
-	video_proc = VideoProc(video)
-	if method == 'random': 
-		video_proc.shuffle(video_proc.cut_to_videos(cut_size=cut_size))
-	write(output_video_name, video_proc.video)

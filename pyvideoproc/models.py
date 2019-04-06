@@ -8,8 +8,6 @@ from pathlib import Path
 
 from .logger import log
 
-name = 'bitch'
-
 class Video:
 
 	def __init__(self, path):
@@ -21,10 +19,10 @@ class Video:
 		except:
 			raise Exception(f'{path} file does not exist.')
 
-		self.name = path_obj.name
-		self.width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-		self.height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-		self.fps = int(cap.get(cv2.CAP_PROP_FPS))
+		self._name = path_obj.name
+		self._width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+		self._height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+		self._fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 		self.__load(cap)
 
@@ -36,6 +34,11 @@ class Video:
 		for i in range(frames_count):
 			ret, frame = cap.read()
 			self.frames[i] = frame
+
+	@log('Adding all to {}')
+	def add_all(self, others):
+		for other in others:
+			self.add(other)
 
 	@log('Adding video to {}')
 	def add(self, other):
@@ -54,5 +57,48 @@ class Video:
 								self.frames[places[1]:]))
 		return self.frames[places[0]:places[1]]
 
+	def empty_frames(self):
+		self.frames = np.empty(shape=self.frames[0].shape, dtype=np.ndarray)
+
+	@property
+	def name(self):
+		return self._name
+	
+	@property
+	def width(self):
+		return self._width
+
+	@property
+	def height(self):
+		return self._height
+
+	@property
+	def fps(self):
+		return self._fps
+
+	@property
+	def frames(self):
+		return self._frames
+
+	@name.setter
+	def name(self, other):
+		self._name = other
+
+	@width.setter
+	def width(self, other):
+		self._width = other
+
+	@height.setter
+	def height(self, other):
+		self._height = other
+
+	@fps.setter
+	def fps(self, other):
+		self._fps = other
+
+	@frames.setter
+	def frames(self, other):
+		self._frames = other
+
 	def __str__(self):
-		return self.name
+		return self._name
