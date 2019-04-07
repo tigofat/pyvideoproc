@@ -1,8 +1,10 @@
+#!/urs/bin/env python3
+
 import pyvideoproc as vproc
 
 import numpy as np
-import time
 
+import time
 import random
 
 video = vproc.Video('pyvideoproc/videos/screen.mp4')
@@ -27,6 +29,6 @@ start = time.time()
 
 video.add_all(frames_in_range)
 
-#print(time.time() - start)
+print(time.time() - start)
 
 vproc.write('Processed', video)
