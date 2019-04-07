@@ -27,6 +27,6 @@ start = time.time()
 
 video.add_all(frames_in_range)
 
-print(time.time() - start)
+#print(time.time() - start)
 
 vproc.write('Processed', video)

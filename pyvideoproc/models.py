@@ -1,5 +1,3 @@
-import time
-
 import cv2
 import numpy as np
 import copy
@@ -37,7 +35,9 @@ class Video:
 
 	@log('Adding all to {}')
 	def add_all(self, others):
-		self.frames = np.concatenate((self.frames, np.array(others)))
+		original_frames = self.frames
+		self.frames = np.array(others)
+		self.frames = np.concatenate((self.frames, original_frames))
 
 	@log('Adding video to {}')
 	def add(self, other):
@@ -62,7 +62,7 @@ class Video:
 	@property
 	def name(self):
 		return self._name
-	
+
 	@property
 	def width(self):
 		return self._width
