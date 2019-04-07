@@ -50,7 +50,7 @@ class VideoProc:
 		#_frames = np.empty(shape=len(frames), dtype=np.ndarray)
 		#for frame in frames:
 		#	_frames[i] = frame
-		return np.array(frames)
+		return frames
 
 	@property
 	def video(self):

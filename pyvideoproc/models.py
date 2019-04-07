@@ -35,6 +35,7 @@ class Video:
 
 	@log('Adding all to {}')
 	def add_all(self, others):
+		others.append(self.frames)
 		self.frames = np.array(others)
 
 	@log('Adding video to {}')
