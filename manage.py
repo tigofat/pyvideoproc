@@ -23,6 +23,10 @@ frames_in_range = video_editor.cut_in_range(lower_color, upper_color, 0.6)
 
 video.empty_frames()
 
-video.add(frames_in_range)
+start = time.time()
+
+video.add_all(frames_in_range)
+
+print(time.time() - start)
 
 vproc.write('Processed', video)

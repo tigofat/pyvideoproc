@@ -47,7 +47,9 @@ class VideoProc:
 			mask_shape = mask.shape[0] * mask.shape[1]
 			if shape_of_matching_colors / mask_shape >= threshhold:
 				frames.append(frame)
-
+		#_frames = np.empty(shape=len(frames), dtype=np.ndarray)
+		#for frame in frames:
+		#	_frames[i] = frame
 		return np.array(frames)
 
 	@property
