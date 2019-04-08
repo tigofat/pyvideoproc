@@ -16,23 +16,10 @@ def __get_logger(level):
 		'exception': logging.exception
 	}.get(level, None)
 
-def log_with_loading(func):
-	loading_chars = ['▖', '▗', '▝', '▘']
-	index = 0
-
-	def log_wrapper(*args, **kwargs):
-		if index == len(loading_chars):
-			index = 0
-
-		sys.stdout.write(f'\r{loading_chars[index]}')
-		index += 1
-
-		return func(*args, **kwargs)
-
 def log(message, level='info'):
 	def decorator(func):
-		def log_message_wrapper(self, *args, **kwargs):
+		def log_method_wrapper(self, *args, **kwargs):
 			__get_logger(level)(f'{message}'.format(self))
 			return func(self, *args, **kwargs)
-		return log_message_wrapper
+		return log_method_wrapper
 	return decorator

@@ -13,6 +13,7 @@ pprint = pp.PrettyPrinter().pprint
 
 video = vproc.Video('pyvideoproc/videos/man.mp4')
 video2 = vproc.Video('pyvideoproc/videos/scooby.mp4')
+screen = vproc.Video('pyvideoproc/videos/screen.mp4')
 
 video_editor = vproc.VideoProc(video)
 
@@ -23,24 +24,16 @@ video_editor = vproc.VideoProc(video)
 #video.add_all(cut_frames)
 
 lower_color = np.array([50, 0, 0])
-upper_color = np.array([205, 255, 255])
+upper_color = np.array([205, 205, 255])
 
 frames_in_range = video_editor.cut_in_range(lower_color, upper_color, 0.6)
 
 start = time.time()
 
-#video.add(video2)
-
-#video.cut((200, 300))
-
-pprint(frames_in_range[0])
-print('Frames')
-pprint(video.frames[0])
-
-video.add_all(frames_in_range)
+screen.add(frames_in_range)
 
 #print(video.frames.shape)
 
 #print(time.time() - start)
 
-vproc.write('Processed', video)
+vproc.write('Processed.avi', video)

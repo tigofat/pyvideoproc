@@ -2,7 +2,8 @@
 
 import logging
 
-from .edit import write, VideoProc
+from .edit import VideoProc
+from .writer import write
 from .models import Video
 from .audio import get_audio, combine_video_and_audio
 from .manage import get_videos_from_dir

@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import copy
 import time
+import logging
 from pathlib import Path
 
 from .logger import log
@@ -14,6 +15,7 @@ class Video:
 
 		try:
 			cap = cv2.VideoCapture(str(path_obj))
+			self.cap = cap
 		except:
 			raise Exception(f'{path} file does not exist.')
 
@@ -24,34 +26,46 @@ class Video:
 
 		self.__load(cap)
 
-	@log('Loading {}')
+	@log('Loading {}.')
 	def __load(self, cap):
 		frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-		self.frames = np.empty(frames_count, dtype=np.ndarray)
+		frames = []
 		for i in range(frames_count):
 			ret, frame = cap.read()
-			self.frames[i] = frame
+			frames.append(frame)
 
-	@log('Adding all videos to {}')
-	def add_all(self, others):
-		for other in others:
-			self.add(other)
+		self.__store_frames(frames, 6)
 
-	@log('Adding video to {}')
+	@log('Storing frames of {}.')
+	def __store_frames(self, frames, cut_size=2):
+		cut = len(frames)//cut_size
+		try:
+			self._frames = np.array(frames[:cut], dtype=np.uint8)
+			for c in range(cut, len(frames))[::cut]:
+				self._frames = np.concatenate((self._frames, frames[c:c + cut]))
+		except MemoryError:
+			logging.warning(f'Memory Error has occured while loading {self._name}, ')
+			self.__load_slowely(frames, 7)
+
+	@log('Adding frame to {}.')
+	def add_frame(self, frame):
+		self.frames = np.concatenate((self.frames, np.array([frame])))
+
+	@log('Adding video to {}.')
 	def add(self, other):
 		frames = other.frames if isinstance(other, Video) else other
-		print(self.frames.shape)
-		print(frames.shape)
+		#print(self.frames.shape)
+		#print(frames.shape)
 		self.frames = np.concatenate((self.frames, frames))
 
-	@log('Repeating {}')
+	@log('Repeating {}.')
 	def rep(self, times):
 		original_frames = self.frames
 		for i in range(1, times):
 			self.frames = np.hstack((self.frames, original_frames))
 
-	@log('Cutting {}')
+	@log('Cutting {}.')
 	def cut(self, places):
 		self.frames = np.hstack((self.frames[:places[0]], 
 								self.frames[places[1]:]))

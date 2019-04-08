@@ -12,21 +12,6 @@ from .logger import log
 
 pprint = pp.PrettyPrinter().pprint
 
-def create_video_writer(output_video_name, fps, width, height):
-	fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-	return cv2.VideoWriter(f'{output_video_name}.avi', fourcc, fps, (width, height))
-
-
-def write(output_video_name, video):
-	video_writer = create_video_writer(output_video_name, video.fps, 
-		video.width, video.height)
-	i = 0
-	for frame in video.frames:
-		print(frame.shape, i)
-		i += 1
-		video_writer.write(frame)
-
-
 class VideoProc:
 
 	def __init__(self, video):
