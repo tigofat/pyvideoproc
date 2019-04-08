@@ -33,15 +33,17 @@ class Video:
 			ret, frame = cap.read()
 			self.frames[i] = frame
 
-	@log('Adding all to {}')
+	@log('Adding all videos to {}')
 	def add_all(self, others):
-		others.append(self.frames)
-		self.frames = np.array(others)
+		for other in others:
+			self.add(other)
 
 	@log('Adding video to {}')
 	def add(self, other):
 		frames = other.frames if isinstance(other, Video) else other
-		self.frames = np.hstack((self.frames, frames))
+		print(self.frames.shape)
+		print(frames.shape)
+		self.frames = np.concatenate((self.frames, frames))
 
 	@log('Repeating {}')
 	def rep(self, times):
@@ -54,9 +56,6 @@ class Video:
 		self.frames = np.hstack((self.frames[:places[0]], 
 								self.frames[places[1]:]))
 		return self.frames[places[0]:places[1]]
-
-	def empty_frames(self):
-		self.frames = np.empty(shape=self.frames[0].shape, dtype=np.ndarray)
 
 	@property
 	def name(self):

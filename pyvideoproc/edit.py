@@ -20,7 +20,10 @@ def create_video_writer(output_video_name, fps, width, height):
 def write(output_video_name, video):
 	video_writer = create_video_writer(output_video_name, video.fps, 
 		video.width, video.height)
+	i = 0
 	for frame in video.frames:
+		print(frame.shape, i)
+		i += 1
 		video_writer.write(frame)
 
 
@@ -47,10 +50,7 @@ class VideoProc:
 			mask_shape = mask.shape[0] * mask.shape[1]
 			if shape_of_matching_colors / mask_shape >= threshhold:
 				frames.append(frame)
-		#_frames = np.empty(shape=len(frames), dtype=np.ndarray)
-		#for frame in frames:
-		#	_frames[i] = frame
-		return frames
+		return np.array(frames)
 
 	@property
 	def video(self):
