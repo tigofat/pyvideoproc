@@ -9,44 +9,38 @@ from .logger import log
 
 class Video:
 
-	def __init__(self, path):
+	def __init__(self, path, load=True):
+		self.path = Path(path)
+		self.name = self.path.name
+		if load: self.load()
 
-		path_obj = Path(path)
+	@log('Loading {}.')
+	def load(self):
 
 		try:
-			cap = cv2.VideoCapture(str(path_obj))
-			self.cap = cap
+			cap = cv2.VideoCapture(str(self.path))
 		except:
 			raise Exception(f'{path} file does not exist.')
 
-		self._name = path_obj.name
 		self._width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 		self._height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 		self._fps = int(cap.get(cv2.CAP_PROP_FPS))
 
-		self.__load(cap)
+		self.__store_frames(cap)
 
-	@log('Loading {}.')
-	def __load(self, cap):
+	@log('Storing frames of {}.')
+	def __store_frames(self, cap):
 		frames_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
 		frames = []
 		for i in range(frames_count):
 			ret, frame = cap.read()
 			frames.append(frame)
-
-		self.__store_frames(frames, 6)
-
-	@log('Storing frames of {}.')
-	def __store_frames(self, frames, cut_size=2):
-		cut = len(frames)//cut_size
 		try:
-			self._frames = np.array(frames[:cut], dtype=np.uint8)
-			for c in range(cut, len(frames))[::cut]:
-				self._frames = np.concatenate((self._frames, frames[c:c + cut]))
+			# Note that this operation will consume a lot of memory and CPU, so consider using a strog computer to lead bigger videos
+			self._frames = np.array(frames, dtype=np.uint8)
 		except MemoryError:
-			logging.warning(f'Memory Error has occured while loading {self._name}, ')
-			self.__load_slowely(frames, 7)
+			raise Exception(f'WARNING: Memory Error has occured while loading {self._name}.')
 
 	@log('Adding frame to {}.')
 	def add_frame(self, frame):
@@ -55,7 +49,7 @@ class Video:
 	@log('Adding video to {}.')
 	def add(self, other):
 		frames = other.frames if isinstance(other, Video) else other
-		#print(self.frames.shape)
+		#print(self.frames.shapei)
 		#print(frames.shape)
 		self.frames = np.concatenate((self.frames, frames))
 
@@ -70,6 +64,18 @@ class Video:
 		self.frames = np.hstack((self.frames[:places[0]], 
 								self.frames[places[1]:]))
 		return self.frames[places[0]:places[1]]
+
+	@log('Resizing {}')
+	def resize_black(self, height, width):
+		pass
+
+	@log('Resizing {}.')
+	def resize(self, width, height, background):
+		pass
+
+	@log('Emptying frames of {}.')
+	def empty_frames(self):
+		self.frames = np.empty(shape=0, dtype=np.uint8)
 
 	@property
 	def name(self):
